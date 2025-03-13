@@ -1,0 +1,31 @@
+ 
+{
+    "lenses": [
+      {
+        "name": "Canon Lens 50 mm RF 1.2F",
+        "manufacturer": "Canon",
+        "aperture": "f/1.2"
+      },
+      {
+        "name": "Canon Lens 24-105 mm RF",
+        "manufacturer": "Canon",
+        "aperture": "f/2.8"
+      },
+      {
+        "name": "Canon Lens 85 mm RF",
+        "manufacturer": "Canon",
+        "aperture": "f/1.2"
+      },
+      {
+        "name": "Canon Lens 100 mm RF",
+        "manufacturer": "Canon",
+        "aperture": "f/2.8"
+      },
+      {
+        "name": "Canon Lens 70-200 mm RF",
+        "manufacturer": "Canon",
+        "aperture": "f/2.8"
+      }
+    ]
+  }
+

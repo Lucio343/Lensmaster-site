@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Lenses </title>
+    <link rel="stylesheet" href="data.css"> 
+ 
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            direction: rtl;
+            text-align: left;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        
+    </style>
+
+</head>
+
+
+</header>
+
+    <h1>Lenses </h1>
+    <table id="lens-table">
+        <thead>
+            <tr id="table-header"></tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+    </table>
+    <script src="script.js"></script>
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Lens Filter</title>
+        <style>
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px;
+            }
+            table, th, td {
+                border: 1px solid black;
+            }
+            th, td {
+                padding: 8px;
+                text-align: left;
+            }
+            .filter-controls {
+                margin: 20px 0;
+            }
+            .filter-controls input, .filter-controls button {
+                margin-right: 10px;
+                padding: 10px 15px;
+                font-size: 16px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Lens Filter</h1>
+        <div class="filter-controls">
+            <button onclick="filterLenses('Zoom')">Show Zoom Lenses</button>
+            <button onclick="filterLenses('Prime')">Show Prime Lenses</button>
+            <button onclick="filterLenses('All')">Show All Lenses</button>
+            <br><br>
+            <label for="minFocal">Min Focal Length:</label>
+            <input type="number" id="minFocal" placeholder="e.g., 10">
+            <label for="maxFocal">Max Focal Length:</label>
+            <input type="number" id="maxFocal" placeholder="e.g., 300">
+            <br><br>
+            <label for="minPrice">Min Price:</label>
+            <input type="number" id="minPrice" placeholder="e.g., 10">
+            <label for="maxPrice">Max Price:</label>
+            <input type="number" id="maxPrice" placeholder="e.g., 5000">
+            <button onclick="applyFilters()">Apply Filters</button>
+        </div>
+        <table id="lensTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Focal Length</th>
+                    <th>Max Aperture</th>
+                    <th>Type</th>
+                    <th>Compatibility</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Lenses will be displayed here -->
+            </tbody>
+        </table>
+    
+        <script>
+            // Sample dataset (replace with your full dataset)
+            const lenses = [
+    {
+        "id": 1,
+        "name": "Canon EF 50mm f/1.8 STM",
+        "focal_length": "50mm",
+        "max_aperture": "f/1.8",
+        "type": "Prime",
+        "compatibility": "Canon EF",
+        "price": 125.00 
+    },
+    {
+        "id": 2,
+        "name": "Nikon AF-S DX 35mm f/1.8G",
+        "focal_length": "35mm",
+        "max_aperture": "f/1.8",
+        "type": "Prime",
+        "compatibility": "Nikon DX",
+        "price": 196.95
+    },
+    {
+        "id": 3,
+        "name": "Sony FE 24-70mm f/2.8 GM",
+        "focal_length": "24-70mm",
+        "max_aperture": "f/2.8",
+        "type": "Zoom",
+        "compatibility": "Sony E",
+        "price": 2298.00
+    },
+    {
+        "id": 4,
+        "name": "Tamron 70-200mm f/2.8 Di VC USD",
+        "focal_length": "70-200mm",
+        "max_aperture": "f/2.8",
+        "type": "Zoom",
+        "compatibility": "Canon/Nikon",
+        "price": 1199.00
+    },
+    {
+        "id": 5,
+        "name": "Sigma 14mm f/1.8 DG HSM Art",
+        "focal_length": "14mm",
+        "max_aperture": "f/1.8",
+        "type": "Prime",
+        "compatibility": "Canon/Nikon/Sony",
+        "price": 1599.00
+    },
+    {
+        "id": 6,
+        "name": "Panasonic Lumix 20mm f/1.7 II ASPH",
+        "focal_length": "20mm",
+        "max_aperture": "f/1.7",
+        "type": "Prime",
+        "compatibility": "Micro Four Thirds",
+        "price": 347.99
+    },
+    {
+        "id": 7,
+        "name": "Fujifilm XF 23mm f/1.4 R",
+        "focal_length": "23mm",
+        "max_aperture": "f/1.4",
+        "type": "Prime",
+        "compatibility": "Fujifilm X",
+        "price": 899.00
+    },
+    {
+        "id": 8,
+        "name": "Tokina AT-X 11-20mm f/2.8 PRO DX",
+        "focal_length": "11-20mm",
+        "max_aperture": "f/2.8",
+        "type": "Zoom",
+        "compatibility": "Canon/Nikon",
+        "price": 479.00
+    },
+    {
+        "id": 9,
+        "name": "Canon RF 85mm f/1.2L",
+        "focal_length": "85mm",
+        "max_aperture": "f/1.2",
+        "type": "Prime",
+        "compatibility": "Canon RF",
+        "price": 2699.00
+    },
+    {
+        "id": 10,
+        "name": "Nikon Z 24-70mm f/2.8 S",
+        "focal_length": "24-70mm",
+        "max_aperture": "f/2.8",
+        "type": "Zoom",
+        "compatibility": "Nikon Z",
+        "price": 2296.95
+    },
+    {
+        "id": 11,
+        "name": "Tamron 15-30mm f/2.8 Di VC USD",
+        "focal_length": "15-30mm",
+        "max_aperture": "f/2.8",
+        "type": "Zoom",
+        "compatibility": "Canon/Nikon",
+        "price": 1299.00
+    },
+    {
+        "id": 12,
+        "name": "Sigma 35mm f/1.4 DG HSM Art",
+        "focal_length": "35mm",
+        "max_aperture": "f/1.4",
+        "type": "Prime",
+        "compatibility": "Canon/Nikon/Sony",
+        "price": 899.00
+    },
+    {
+        "id": 13,
+        "name": "Canon EF 24mm f/2.8 IS USM",
+        "focal_length": "24mm",
+        "max_aperture": "f/2.8",
+        "type": "Prime",
+        "compatibility": "Canon EF",
+        "price": 549.00
+    },
+    {
+        "id": 14,
+        "name": "Nikon 50mm f/1.8G",
+        "focal_length": "50mm",
+        "max_aperture": "f/1.8",
+        "type": "Prime",
+        "compatibility": "Nikon FX/DX",
+        "price": 216.95
+    },
+    {
+        "id": 15,
+        "name": "Sony E 50mm f/1.8 OSS",
+        "focal_length": "50mm",
+        "max_aperture": "f/1.8",
+        "type": "Prime",
+        "compatibility": "Sony E",
+        "price": 348.00
+    },
+    {
+        "id": 16,
+        "name": "Olympus M.Zuiko Digital ED 12mm f/2.0",
+        "focal_length": "12mm",
+        "max_aperture": "f/2.0",
+        "type": "Prime",
+        "compatibility": "Micro Four Thirds",
+        "price": 649.00
+    },
+    {
+        "id": 17,
+        "name": "Voigtländer 40mm f/1.2 Nokton",
+        "focal_length": "40mm",
+        "max_aperture": "f/1.2",
+        "type": "Prime",
+        "compatibility": "Sony E",
+        "price": 1099.00
+    },
+    {
+        "id": 18,
+        "name": "Laowa 105mm f/2.0 2x Ultra Macro APO",
+        "focal_length": "105mm",
+        "max_aperture": "f/2.0",
+        "type": "Macro",
+        "compatibility": "Canon/Nikon/Sony",
+        "price": 649.00
+    },
+    {
+        "id": 19,
+        "name": "Sigma 24-70mm f/2.8 DG OS HSM",
+        "focal_length": "24-70mm",
+        "max_aperture": "f/2.8",
+        "type": "Zoom",
+        "compatibility": "Canon/Nikon",
+        "price": 1099.00
+    },
+    {
+        "id": 20,
+        "name": "Tamron 28-75mm f/2.8 Di III RXD",
+        "focal_length": "28-75mm",
+        "max_aperture": "f/2.8",
+        "type": "Zoom",
+        "compatibility": "Sony E",
+        "price": 879.00
+    }
+
+
+    ,
+        {
+            "id": 21,
+            "name": "Panasonic Lumix G 42.5mm f/1.7 ASPH POWER OIS",
+            "focal_length": "42.5mm",
+            "max_aperture": "f/1.7",
+            "type": "Prime",
+            "compatibility": "Micro Four Thirds",
+            "price": 347.99
+        },
+        {
+            "id": 22,
+            "name": "Olympus M.Zuiko Digital ED 40-150mm f/2.8 PRO",
+            "focal_length": "40-150mm",
+            "max_aperture": "f/2.8",
+            "type": "Zoom",
+            "compatibility": "Micro Four Thirds",
+            "price": 1499.00
+        },
+        {
+            "id": 23,
+            "name": "Canon EF-S 17-55mm f/2.8 IS USM",
+            "focal_length": "17-55mm",
+            "max_aperture": "f/2.8",
+            "type": "Zoom",
+            "compatibility": "Canon EF-S",
+            "price": 879.99
+        },
+        {
+            "id": 24,
+            "name": "Sony FE 135mm f/1.8 GM",
+            "focal_length": "135mm",
+            "max_aperture": "f/1.8",
+            "type": "Prime",
+            "compatibility": "Sony E",
+            "price": 2098.00
+        },
+        {
+            "id": 25,
+            "name": "Tamron 35-150mm f/2-2.8 Di III VXD",
+            "focal_length": "35-150mm",
+            "max_aperture": "f/2-2.8",
+            "type": "Zoom",
+            "compatibility": "Sony E",
+            "price": 1899.99
+        },
+        {
+            "id": 26,
+            "name": "Sigma 14-24mm f/2.8 DG HSM Art",
+            "focal_length": "14-24mm",
+            "max_aperture": "f/2.8",
+            "type": "Zoom",
+            "compatibility": "Canon EF, Nikon F",
+            "price": 1299.00
+        },
+        {
+            "id": 27,
+            "name": "Fujifilm XF 10-24mm f/4 R OIS",
+            "focal_length": "10-24mm",
+            "max_aperture": "f/4",
+            "type": "Zoom",
+            "compatibility": "Fujifilm X",
+            "price": 999.00
+        },
+        {
+            "id": 28,
+            "name": "Sony FE 85mm f/1.4 GM",
+            "focal_length": "85mm",
+            "max_aperture": "f/1.4",
+            "type": "Prime",
+            "compatibility": "Sony E",
+            "price": 1798.00
+        },
+        {
+            "id": 29,
+            "name": "Canon RF 100mm f/2.8L Macro IS USM",
+            "focal_length": "100mm",
+            "max_aperture": "f/2.8",
+            "type": "Prime",
+            "compatibility": "Canon RF",
+            "price": 1399.00
+        },
+        {
+            "id": 30,
+            "name": "Nikon Z 14-30mm f/4 S",
+            "focal_length": "14-30mm",
+            "max_aperture": "f/4",
+            "type": "Zoom",
+            "compatibility": "Nikon Z",
+            "price": 1346.95
+        },
+        {
+            "id": 31,
+            "name": "Sony E 18-135mm f/3.5-5.6 OSS",
+            "focal_length": "18-135mm",
+            "max_aperture": "f/3.5-5.6",
+            "type": "Zoom",
+            "compatibility": "Sony E",
+            "price": 598.00
+        },
+        {
+            "id": 32,
+            "name": "Canon EF 85mm f/1.8 USM",
+            "focal_length": "85mm",
+            "max_aperture": "f/1.8",
+            "type": "Prime",
+            "compatibility": "Canon EF",
+            "price": 419.00
+        },
+        {
+            "id": 33,
+            "name": "Nikon AF-P DX 70-300mm f/4.5-6.3G ED VR",
+            "focal_length": "70-300mm",
+            "max_aperture": "f/4.5-6.3",
+            "type": "Zoom",
+            "compatibility": "Nikon DX",
+            "price": 399.95
+        },
+        {
+            "id": 34,
+            "name": "Sigma 70mm f/2.8 DG Macro Art",
+            "focal_length": "70mm",
+            "max_aperture": "f/2.8",
+            "type": "Prime",
+            "compatibility": "Sony E, Canon EF",
+            "price": 569.00
+        },
+        {
+            "id": 35,
+            "name": "Fujifilm XF 50mm f/1.0 R WR",
+            "focal_length": "50mm",
+            "max_aperture": "f/1.0",
+            "type": "Prime",
+            "compatibility": "Fujifilm X",
+            "price": 1499.00
+        },
+        {
+            "id": 36,
+            "name": "Tamron 17-28mm f/2.8 Di III RXD",
+            "focal_length": "17-28mm",
+            "max_aperture": "f/2.8",
+            "type": "Zoom",
+            "compatibility": "Sony E",
+            "price": 799.00
+        },
+        {
+            "id": 37,
+            "name": "Olympus M.Zuiko Digital ED 300mm f/4 IS PRO",
+            "focal_length": "300mm",
+            "max_aperture": "f/4",
+            "type": "Prime",
+            "compatibility": "Micro Four Thirds",
+            "price": 2999.99
+        },
+        {
+            "id": 38,
+            "name": "Canon EF 100-400mm f/4.5-5.6L IS II USM",
+            "focal_length": "100-400mm",
+            "max_aperture": "f/4.5-5.6",
+            "type": "Zoom",
+            "compatibility": "Canon EF",
+            "price": 2399.00
+        },
+        {
+            "id": 39,
+            "name": "Nikon Z 20mm f/1.8 S",
+            "focal_length": "20mm",
+            "max_aperture": "f/1.8",
+            "type": "Prime",
+            "compatibility": "Nikon Z",
+            "price": 1046.95
+        },
+        {
+            "id": 40,
+            "name": "Sony FE 90mm f/2.8 Macro G OSS",
+            "focal_length": "90mm",
+            "max_aperture": "f/2.8",
+            "type": "Prime",
+            "compatibility": "Sony E",
+            "price": 1098.00
+        },
+        {
+            "id": 41,
+            "name": "Fujifilm XF 16-80mm f/4 R OIS WR",
+            "focal_length": "16-80mm",
+            "max_aperture": "f/4",
+            "type": "Zoom",
+            "compatibility": "Fujifilm X",
+            "price": 799.00
+        },
+        {
+            "id": 42,
+            "name": "Sigma 85mm f/1.4 DG DN Art",
+            "focal_length": "85mm",
+            "max_aperture": "f/1.4",
+            "type": "Prime",
+            "compatibility": "Sony E, L-Mount",
+            "price": 1199.00
+        },
+        {
+            "id": 43,
+            "name": "Panasonic Leica DG Vario-Summilux 10-25mm f/1.7 ASPH",
+            "focal_length": "10-25mm",
+            "max_aperture": "f/1.7",
+            "type": "Zoom",
+            "compatibility": "Micro Four Thirds",
+            "price": 1797.99
+        },
+        {
+            "id": 44,
+            "name": "Nikon AF-S NIKKOR 50mm f/1.4G",
+            "focal_length": "50mm",
+            "max_aperture": "f/1.4",
+            "type": "Prime",
+            "compatibility": "Nikon F",
+            "price": 446.95
+        },
+        {
+            "id": 45,
+            "name": "Sony E 10-18mm f/4 OSS",
+            "focal_length": "10-18mm",
+            "max_aperture": "f/4",
+            "type": "Zoom",
+            "compatibility": "Sony E",
+            "price": 848.00
+        },
+        {
+            "id": 46,
+            "name": "Canon RF 15-35mm f/2.8L IS USM",
+            "focal_length": "15-35mm",
+            "max_aperture": "f/2.8",
+            "type": "Zoom",
+            "compatibility": "Canon RF",
+            "price": 2399.00
+        },
+        {
+            "id": 47,
+            "name": "Sigma 50mm f/1.4 DG HSM Art",
+            "focal_length": "50mm",
+            "max_aperture": "f/1.4",
+            "type": "Prime",
+            "compatibility": "Canon EF, Nikon F, Sigma SA",
+            "price": 949.00
+        },
+        {
+            "id": 48,
+            "name": "Tamron SP 15-30mm f/2.8 Di VC USD G2",
+            "focal_length": "15-30mm",
+            "max_aperture": "f/2.8",
+            "type": "Zoom",
+            "compatibility": "Canon EF, Nikon F",
+            "price": 1299.00
+        },
+        {
+            "id": 49,
+            "name": "Nikon Z 24-200mm f/4-6.3 VR",
+            "focal_length": "24-200mm",
+            "max_aperture": "f/4-6.3",
+            "type": "Zoom",
+            "compatibility": "Nikon Z",
+            "price": 896.95
+        },
+        {
+            "id": 50,
+            "name": "Fujifilm XF 18mm f/1.4 R LM WR",
+            "focal_length": "18mm",
+            "max_aperture": "f/1.4",
+            "type": "Prime",
+            "compatibility": "Fujifilm X",
+            "price": 999.00
+        }
+    ]
+    
+;
+    
+            // Function to display lenses in the table
+            function displayLenses(filteredLenses) {
+                const tableBody = document.querySelector("#lensTable tbody");
+                tableBody.innerHTML = ""; // Clear previous rows
+                filteredLenses.forEach(lens => {
+                    const row = `
+                        <tr>
+                            <td>${lens.id}</td>
+                            <td>${lens.name}</td>
+                            <td>${lens.focal_length}mm</td>
+                            <td>${lens.max_aperture}</td>
+                            <td>${lens.type}</td>
+                            <td>${lens.compatibility}</td>
+                            <td>$${lens.price.toFixed(2)}</td>
+                        </tr>
+                    `;
+                    tableBody.innerHTML += row;
+                });
+            }
+    
+            // Initial display of all lenses
+            displayLenses(lenses);
+    
+            // Function to filter lenses
+            function applyFilters() {
+                const minFocal = parseInt(document.getElementById("minFocal").value) || 0;
+                const maxFocal = parseInt(document.getElementById("maxFocal").value) || Infinity;
+                const minPrice = parseFloat(document.getElementById("minPrice").value) || 0;
+                const maxPrice = parseFloat(document.getElementById("maxPrice").value) || Infinity;
+    
+                const filteredLenses = lenses.filter(lens => {
+                    // Convert focal_length to numeric for comparison
+                    const focalParts = lens.focal_length.split("-");
+                    const lensMinFocal = parseInt(focalParts[0]);
+                    const lensMaxFocal = focalParts.length > 1 ? parseInt(focalParts[1]) : lensMinFocal;
+    
+                    return (
+                        lensMinFocal >= minFocal &&
+                        lensMaxFocal <= maxFocal &&
+                        lens.price >= minPrice &&
+                        lens.price <= maxPrice
+                    );
+                });
+    
+                displayLenses(filteredLenses);
+            }
+    
+            // Filter by type
+            function filterLenses(type) {
+                const filteredLenses = type === "All" ? lenses : lenses.filter(lens => lens.type === type);
+                displayLenses(filteredLenses);
+            }
+        </script>
+    </body>
+    </html>
+    
+    
+</body>
+</html>
