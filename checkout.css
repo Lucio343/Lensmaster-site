@@ -1,0 +1,11 @@
+header {
+    background-color: rgba(32, 32, 32, 0.527);
+    width: 100%;
+    position: fixed;
+    z-index: 999;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 100px;
+
+}
